@@ -8,8 +8,10 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class ProtoInstllationKit : MonoBehaviour {
 
-    public string [] _folders;
-    public FileToDownload [] _webFiles;
+    public string[] _folders;
+    public string[] _links;
+    public FileToDownload[] _webFiles;
+
     public void Awake()
     {
         InstallBasicStructure(this);
@@ -17,6 +19,13 @@ public class ProtoInstllationKit : MonoBehaviour {
     }
 
 
+    public static string[] _linksToOpen = new string[]{
+          "https://trello.com/",
+          "https://patreon.com/jamscenter",
+          "https://github.com/new",
+          "https://code.google.com/archive/p/chronolapse/downloads",
+          "http://e.ggtimer.com/48hours"
+     };
     public static string[] _foldersToCreate = new string[] {
         "/_Project/",
         "/_Project/Assets",
@@ -43,9 +52,8 @@ public class ProtoInstllationKit : MonoBehaviour {
         Debug.Log("Install start");
         CreateGitIgnoreAtProjectRoot();
         CreateFolderStructure();
+        OpenLinks();
         AssetDatabase.Refresh();
-        Application.OpenURL("https://trello.com/");
-        Application.OpenURL("https://github.com/new");
         // DownloadFile();
     }
 
@@ -54,8 +62,16 @@ public class ProtoInstllationKit : MonoBehaviour {
     {
         ProtoInstllationKit._foldersToCreate = _folders;
         ProtoInstllationKit._fileToDownload = _webFiles;
+        ProtoInstllationKit._linksToOpen = _links;
         InstallBasicStructure();
 
+    }
+    private static void OpenLinks()
+    {
+        for (int i = 0; i < _linksToOpen.Length; i++)
+        {
+            Application.OpenURL(_linksToOpen[i]);
+        }
     }
 
     private static void CreateFolderStructure()
@@ -82,11 +98,14 @@ public class ProtoInstllationKit : MonoBehaviour {
 
     private static void CreateGitIgnoreAtProjectRoot()
     {
-        string _gitIgnore = "/[Ll]ibrary/\n" + "/[Tt]emp/\n" + "/[Oo]bj/\n" + "/[Bb]uild/\n" + "/[Bb]uilds/\n" + "/ Assets/AssetStoreTools*\n" + "/.vs/\n" + "ExportedObj/\n" + ".consulo/\n" + "*.csproj\n" + "*.unityproj\n" + "*.sln\n" + "*.suo\n" + "*.tmp\n" + "*.user\n" + "*.userprefs\n" + "*.pidb\n" + "*.booproj\n" + "*.svd\n" + "*.pdb\n" + "*.pidb.meta\n" + "sysinfo.txt\n" + "*.apk\n" + "*.unitypackage\n";
+        string gitIgnore = "/[Ll]ibrary/\n" + "/[Tt]emp/\n" + "/[Oo]bj/\n" + "/[Bb]uild/\n" + "/[Bb]uilds/\n" + "/ Assets/AssetStoreTools*\n" + "/.vs/\n" + "ExportedObj/\n" + ".consulo/\n" + "*.csproj\n" + "*.unityproj\n" + "*.sln\n" + "*.suo\n" + "*.tmp\n" + "*.user\n" + "*.userprefs\n" + "*.pidb\n" + "*.booproj\n" + "*.svd\n" + "*.pdb\n" + "*.pidb.meta\n" + "sysinfo.txt\n" + "*.apk\n" + "*.unitypackage\n";
         string pathGitIgnore = Application.dataPath + "/../.gitignore";
-        if (File.Exists(pathGitIgnore))
-            File.Delete(pathGitIgnore);
-        File.WriteAllText(pathGitIgnore, _gitIgnore);
+
+        if (!File.Exists(pathGitIgnore))
+        {
+            File.WriteAllText(pathGitIgnore, gitIgnore);
+            Debug.Log("GitIgnore Created:"+pathGitIgnore);
+        }
     }
 }
 

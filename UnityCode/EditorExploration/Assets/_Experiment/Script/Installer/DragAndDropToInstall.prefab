@@ -51,3 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d74e8ea3e2e6f446b2133ee21bc2d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _folders:
+  - 
+  _links: []
+  _webFiles: []
