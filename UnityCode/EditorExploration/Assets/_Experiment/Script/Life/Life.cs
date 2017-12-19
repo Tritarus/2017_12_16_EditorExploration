@@ -22,7 +22,7 @@ public class Life : MonoBehaviour
     /// <summary>
     /// Life of the target between 0-1 pourcent
     /// </summary>
-    private float _life;
+    private float _life=1;
     /// <summary>
     /// Life of the target between 0-1 pourcent
     /// </summary>
@@ -44,43 +44,37 @@ public class Life : MonoBehaviour
     public float Value
     {
         get { return _life; }
-        set
+        set 
         {
-            value = Mathf.Clamp01(value);
+            float oldValue = _life;
+            float newValue = Mathf.Clamp01(value);
             _life = value;
-            _onLifeChange.Invoke(_life);
+
+            if (newValue == 1f)
+                _onFullLife.Invoke();
+            if (newValue == 0f)
+                _onDeath.Invoke();
+
+            _onLifeChange.Invoke(newValue);
         }
     }
-    public void Start()
-    {
-
-        _onLifeChange.AddListener(VieChanger);
-    }
-
-    private void RetirerDesVies(float lifeAdditionnel)
-    {
-        Value += lifeAdditionnel;
-    }
-
-    private void AfficherAttackInConsole(float what)
-    {
-        Debug.Log("Life:" + Value);
-    }
-
-    private void VieChanger(float nouvelleVie)
-    {
-        Debug.Log("Nouvelle vie:" + nouvelleVie);
-    }
+    
 
     public void OnValidate()
     {
-        if (_useDebugLog)
-            Debug.Log("Hey Mon ami");
+        //if (_useDebugLog)
+        //    Debug.Log("Hey Mon ami");
         Value = _life;
     }
-    public void Reset()
-    {
 
+    internal void DommageOf(float dommageInPourcent)
+    {
+        Value -= dommageInPourcent;
+    }
+
+    internal void HealOf(float healInPourcent)
+    {
+        Value -= healInPourcent;
     }
 
     #region CLASS INTERN

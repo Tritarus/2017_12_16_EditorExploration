@@ -17,15 +17,15 @@ public class LifeEditor : Editor
         GUILayout.Label("Function");
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Resurectoin"))
+        if (GUILayout.Button("Full Heal"))
         {
-            myTarget.Value = 1f;
+            myTarget.Value = 5;
 
 
         }
         if (GUILayout.Button("Kill it"))
         {
-            myTarget.Value = 0f;
+            myTarget.Value = -6;
         }
         GUILayout.EndHorizontal();
 
